@@ -1,0 +1,14 @@
+c:\Desenvolvimento\DevConnect\PlooCinema\bin\Debug\net8.0\PlooCinema.ConsoleApplication.exe
+c:\Desenvolvimento\DevConnect\PlooCinema\bin\Debug\net8.0\PlooCinema.ConsoleApplication.deps.json
+c:\Desenvolvimento\DevConnect\PlooCinema\bin\Debug\net8.0\PlooCinema.ConsoleApplication.runtimeconfig.json
+c:\Desenvolvimento\DevConnect\PlooCinema\bin\Debug\net8.0\PlooCinema.ConsoleApplication.dll
+c:\Desenvolvimento\DevConnect\PlooCinema\bin\Debug\net8.0\PlooCinema.ConsoleApplication.pdb
+c:\Desenvolvimento\DevConnect\PlooCinema\obj\Debug\net8.0\PlooCinema.ConsoleApplication.GeneratedMSBuildEditorConfig.editorconfig
+c:\Desenvolvimento\DevConnect\PlooCinema\obj\Debug\net8.0\PlooCinema.ConsoleApplication.AssemblyInfoInputs.cache
+c:\Desenvolvimento\DevConnect\PlooCinema\obj\Debug\net8.0\PlooCinema.ConsoleApplication.AssemblyInfo.cs
+c:\Desenvolvimento\DevConnect\PlooCinema\obj\Debug\net8.0\PlooCinema.ConsoleApplication.csproj.CoreCompileInputs.cache
+c:\Desenvolvimento\DevConnect\PlooCinema\obj\Debug\net8.0\PlooCinema.ConsoleApplication.dll
+c:\Desenvolvimento\DevConnect\PlooCinema\obj\Debug\net8.0\refint\PlooCinema.ConsoleApplication.dll
+c:\Desenvolvimento\DevConnect\PlooCinema\obj\Debug\net8.0\PlooCinema.ConsoleApplication.pdb
+c:\Desenvolvimento\DevConnect\PlooCinema\obj\Debug\net8.0\PlooCinema.ConsoleApplication.genruntimeconfig.cache
+c:\Desenvolvimento\DevConnect\PlooCinema\obj\Debug\net8.0\ref\PlooCinema.ConsoleApplication.dll
