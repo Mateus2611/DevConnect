@@ -1,0 +1,15 @@
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\bin\Debug\net8.0\PlooCinema.ConsoleApplication.exe
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\bin\Debug\net8.0\PlooCinema.ConsoleApplication.deps.json
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\bin\Debug\net8.0\PlooCinema.ConsoleApplication.runtimeconfig.json
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\bin\Debug\net8.0\PlooCinema.ConsoleApplication.dll
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\bin\Debug\net8.0\PlooCinema.ConsoleApplication.pdb
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\obj\Debug\net8.0\PlooCinema.ConsoleApplication.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\obj\Debug\net8.0\PlooCinema.ConsoleApplication.AssemblyInfoInputs.cache
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\obj\Debug\net8.0\PlooCinema.ConsoleApplication.AssemblyInfo.cs
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\obj\Debug\net8.0\PlooCinema.ConsoleApplication.csproj.CoreCompileInputs.cache
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\obj\Debug\net8.0\PlooCinema.ConsoleApplication.sourcelink.json
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\obj\Debug\net8.0\PlooCinema.ConsoleApplication.dll
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\obj\Debug\net8.0\refint\PlooCinema.ConsoleApplication.dll
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\obj\Debug\net8.0\PlooCinema.ConsoleApplication.pdb
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\obj\Debug\net8.0\PlooCinema.ConsoleApplication.genruntimeconfig.cache
+C:\Users\MateusAlves\Documents\DevConnect\DevConnect\obj\Debug\net8.0\ref\PlooCinema.ConsoleApplication.dll

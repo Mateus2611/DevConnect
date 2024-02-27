@@ -1,6 +1,6 @@
-namespace ClassMovie
+namespace PlooCinema.ConsoleApplication
 {
-    class Movie (string name, TimeSpan duration, DateOnly release, string description)
+    class Movie(string name, TimeSpan duration, DateOnly release, string description)
     {
         public string Name { get; set; } = name;
         public TimeSpan Duration { get; set; } = duration;

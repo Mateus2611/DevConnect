@@ -1,7 +1,7 @@
-using ClassMovie;
+using PlooCinema.ConsoleApplication;
 
 List<Movie> listFilm = [];
-string? movieName = "";
+string movieName = "";
 
 Movie movie1 = new("Sei la", TimeSpan.FromHours(2.45), new DateOnly(2005, 11, 18), "Não sei o que escrever.");
 Movie movie2 = new("Outro Filme", TimeSpan.FromHours(3.06), new DateOnly(1999, 10, 20), "Texto do outro filme.");
@@ -19,22 +19,23 @@ listFilm.Add(movie3);
 do
 {
     Console.Write("Informe o nome do filme: ");
-    movieName = Console.ReadLine();
+    movieName = Console.ReadLine()?.ToLower() ?? "";
 
     if (movieName == "")
         break;
 
-    IEnumerable<Movie> queryNameMovie =
-        from search in listFilm
-        where search.Name == movieName
-        select search;
+    var queryNameMovie = listFilm
+        .Where(item => item.Name.ToLower().Contains(movieName));
+        // from item in listFilm
+        // where item.Name == movieName
+        // select item;
 
     foreach (Movie movie in queryNameMovie)
     {
-        Console.WriteLine($"Nome: {movie.Name}, Duração em minutos: {movie.Duration}, Lançamento: {movie.Release}, Descrição: {movie.Description}");
+        Console.WriteLine($"Nome: {movie.Name}, Duração: {movie.Duration}, Lançamento: {movie.Release}, Descrição: {movie.Description}");
     }
 
-} while (listFilm.Any(name => name.Name != movieName));
+} while (true);
 
 
 Console.ReadKey();
