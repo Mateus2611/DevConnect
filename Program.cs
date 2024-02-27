@@ -1,4 +1,6 @@
-List<Movie> listFilm = new List<Movie>();
+using ClassMovie;
+
+List<Movie> listFilm = [];
 string? movieName = "";
 
 Movie movie1 = new("Sei la", TimeSpan.FromHours(2.45), new DateOnly(2005, 11, 18), "Não sei o que escrever.");
@@ -36,22 +38,6 @@ do
 
 
 Console.ReadKey();
-
-class Movie
-{
-    public string Name { get; set; }
-    public TimeSpan Duration { get; set; }
-    public DateOnly Release { get; set; }
-    public string Description { get; set; }
-
-    public Movie(string name, TimeSpan duration, DateOnly release, string description)
-    {
-        Name = name;
-        Duration = duration;
-        Release = release;
-        Description = description;
-    }
-}
 
 
 // () = Receber e passar parâmetros, inicializar arrow functions
