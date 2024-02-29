@@ -1,4 +1,4 @@
-using PlooCinema.ConsoleApplication;
+using PlooCinema.ConsoleApplication.Model;
 
 List<Movie> listFilm = [];
 string movieName = "";

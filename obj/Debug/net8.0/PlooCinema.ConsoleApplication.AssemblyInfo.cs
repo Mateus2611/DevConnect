@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PlooCinema.ConsoleApplication")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3f094ca78e5b67d1f0920cae2cc5cb94f95d75f7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+06ea504fa42d3ec58fe9d9ef9812c519cd430177")]
 [assembly: System.Reflection.AssemblyProductAttribute("PlooCinema.ConsoleApplication")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PlooCinema.ConsoleApplication")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
