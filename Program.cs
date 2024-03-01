@@ -1,42 +1,32 @@
 using PlooCinema.ConsoleApplication.Model;
+using PlooCinema.ConsoleApplication.Repositories;
 
-List<Movie> listFilm = [];
-string movieName = "";
+IMovieRepository movieRepository = new MovieRepository();
+string nameMovie;
 
-Movie movie1 = new("Sei la", TimeSpan.FromHours(2.45), new DateOnly(2005, 11, 18), "Não sei o que escrever.");
-Movie movie2 = new("Outro Filme", TimeSpan.FromHours(3.06), new DateOnly(1999, 10, 20), "Texto do outro filme.");
-Movie movie3 = new("Mais um filme", TimeSpan.FromHours(3), new DateOnly(1985, 1, 1), "mais um texto de outro filme.");
+Movie movie1 = new("Senhor dos Aneis", TimeSpan.FromHours(3.35), new DateOnly(2005, 11, 19), "Neste filme o senhor bolseiro pede ajuda de seu amigo para ajuda-lo a proteger seu anel.");
 
-listFilm.Add(movie1);
-listFilm.Add(movie2);
-listFilm.Add(movie3);
+Movie movie2 = new("O Hobbit e os Cinco Exércitos", TimeSpan.FromHours(2.90), new DateOnly(2010, 06, 05), "Nesta jornada Bilbo bolseiro terá que utilizar seu anel do poder para enfrentar um exercito de ENORMES orcs.");
 
-// Eatapa 2: Pesquisar filmes por nome (utilzando LINQ).
-// 1 - Criar um campo onde podemos passar o nome via console.
-// 2 - Criar variável de consulta
-// 3 - Executar a consulta
+Movie movie3 = new("Harry Potter e a Pedra \"Filosofal\"", TimeSpan.FromHours(1.57), new DateOnly(2013, 09, 08), "Harry descobre que seu professor está em busca de uma poderosa pedra proibida escondida dentro do castelo.");
+
+movieRepository.Create(movie1);
+movieRepository.Create(movie2);
+movieRepository.Create(movie3);
 
 do
 {
-    Console.Write("Informe o nome do filme: ");
-    movieName = Console.ReadLine()?.ToLower() ?? "";
+    Console.WriteLine("Informe o nome do filme:");
+    nameMovie = Console.ReadLine()?.ToLower() ?? "";
 
-    if (movieName == "")
+    if (nameMovie == "")
         break;
 
-    var queryNameMovie = listFilm
-        .Where(item => item.Name.ToLower().Contains(movieName));
-        // from item in listFilm
-        // where item.Name == movieName
-        // select item;
+    string searchResult = movieRepository.Search(nameMovie);
 
-    foreach (Movie movie in queryNameMovie)
-    {
-        Console.WriteLine($"Nome: {movie.Name}, Duração: {movie.Duration}, Lançamento: {movie.Release}, Descrição: {movie.Description}");
-    }
+    Console.WriteLine(searchResult);
 
-} while (true);
-
+} while(true);
 
 Console.ReadKey();
 
