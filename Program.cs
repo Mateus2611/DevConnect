@@ -16,19 +16,50 @@ movieRepository.Create(movie3);
 
 do
 {
+    Console.WriteLine("Selecione uma das opções abaixo: \n1 - Exibir todos os filmes \n2- Pesquisar filmes \n0 - Sair\n");
+    int nameSearch = Convert.ToInt32(Console.ReadLine());
+
+    if (nameSearch == 0)
+        break;
+
+    switch (nameSearch)
+    {
+        case 1:
+            AllMovies();
+            break;
+        case 2:
+            SearchMovie();
+            break;
+
+    }
+} while (true);
+
+void AllMovies()
+{
+    var searchResult = movieRepository.SearchAll();
+
+    foreach (Movie item in searchResult)
+    {
+        Console.WriteLine(item.ToString());
+    }
+}
+
+void SearchMovie()
+{
     Console.WriteLine("Informe o nome do filme:");
     nameMovie = Console.ReadLine()?.ToLower() ?? "";
 
-    if (nameMovie == "")
-        break;
+    var searchResult = movieRepository.Search(nameMovie);
 
-    string searchResult = movieRepository.Search(nameMovie);
+    foreach (Movie item in searchResult)
+    {
+        // Console.WriteLine("Nome: {0}, Duração: {1}, Lançamento: {2}, Descrição: {3}\n", item.Name, item.Duration, item.Release, item.Description);
+        Console.WriteLine(item.ToString());
+    }
 
-    Console.WriteLine(searchResult);
-
-} while(true);
-
-Console.ReadKey();
+    if (searchResult.Count() == 0)
+        Console.WriteLine("Filme não encontrado");
+}
 
 
 // () = Receber e passar parâmetros, inicializar arrow functions

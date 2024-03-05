@@ -6,5 +6,10 @@ namespace PlooCinema.ConsoleApplication.Model
         public TimeSpan Duration { get; set; } = duration;
         public DateOnly Release { get; set; } = release;
         public string Description { get; set; } = description;
+
+        public override string ToString()
+        {
+            return $"Nome: {Name}, Duração: {Duration}, Lançamento: {Release}, Descrição: {Description}\n";
+        }
     }
 }
