@@ -1,3 +1,4 @@
+using System.Reflection;
 using PlooCinema.ConsoleApplication.Model;
 using PlooCinema.ConsoleApplication.Repositories;
 
@@ -16,7 +17,7 @@ movieRepository.Create(movie3);
 
 do
 {
-    Console.WriteLine("Selecione uma das opções abaixo: \n1 - Exibir todos os filmes \n2- Pesquisar filmes \n0 - Sair\n");
+    Console.WriteLine("Selecione uma das opções abaixo: \n1 - Exibir todos os filmes \n2- Pesquisar filmes \n3- Inserir filme novo \n0 - Sair\n");
     int nameSearch = Convert.ToInt32(Console.ReadLine());
 
     if (nameSearch == 0)
@@ -30,9 +31,34 @@ do
         case 2:
             SearchMovie();
             break;
+        case 3:
+            CreateMovie();
+            break;
 
     }
 } while (true);
+
+void CreateMovie()
+{
+    DateOnly date;
+
+    Console.WriteLine("Informe o nome do filme: ");
+    string title = Console.ReadLine() ?? "No title";
+
+    Console.WriteLine("\nInforme a duração do filme: ");
+    TimeSpan time = TimeSpan.FromHours(Convert.ToDouble(Console.ReadLine()));
+
+    Console.WriteLine("\nInforme a data de lançamento do filme (mm/dd/yyyy): ");
+    string getDate = Console.ReadLine();
+    DateOnly.TryParse(getDate, out date);
+
+    Console.WriteLine("\nInforme a descrição do filme: ");
+    string description = Console.ReadLine() ?? "Filme sem descrição";
+
+    Movie addMovie = new(title, time, date, description);
+
+    movieRepository.Create(addMovie);
+}
 
 void AllMovies()
 {
