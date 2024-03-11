@@ -1,3 +1,4 @@
+using System.Text.Json;
 using PlooCinema.ConsoleApplication.Model;
 
 namespace PlooCinema.ConsoleApplication.Repositories
@@ -13,11 +14,16 @@ namespace PlooCinema.ConsoleApplication.Repositories
     {
 
         List<Movie> listFilm = new List<Movie>();
+        string fileMovie = "MovieFile.json";
 
         
         public void Create(Movie addMovie)
         {
             listFilm.Add(addMovie);
+            string jsonMovie = JsonSerializer.Serialize<Movie>(addMovie);
+            File.WriteAllText(fileMovie, jsonMovie);
+
+            Console.WriteLine(File.ReadAllText(fileMovie));
         }
 
         public IEnumerable<Movie> Search(string name)
