@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Microsoft.VisualBasic;
 using PlooCinema.ConsoleApplication.Model;
 
 namespace PlooCinema.ConsoleApplication.Repositories
@@ -19,24 +20,29 @@ namespace PlooCinema.ConsoleApplication.Repositories
         
         public void Create(Movie addMovie)
         {
-            listFilm.Add(addMovie);
-            string jsonMovie = JsonSerializer.Serialize<Movie>(addMovie);
+            var jsonMovie = JsonSerializer.Serialize<Movie>(addMovie);
             File.WriteAllText(fileMovie, jsonMovie);
-
-            Console.WriteLine(File.ReadAllText(fileMovie));
         }
 
         public IEnumerable<Movie> Search(string name)
         {
-            var queryNameMovie = listFilm
-                .Where(item => item.Name.ToLower().Contains(name));
+            var getJsonMovie = File.ReadAllText(fileMovie);
+
+            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie);
+
+            var queryNameMovie = jsonMovie
+                .Where( item => item.Name.ToLower().Contains(name));
 
             return queryNameMovie;
         }
 
         public IEnumerable<Movie> SearchAll()
         {
-            return listFilm;
+            var getJsonMovie = File.ReadAllText(fileMovie);
+
+            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie);
+
+            return jsonMovie;
         }
     }
 }

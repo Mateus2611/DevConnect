@@ -11,9 +11,9 @@ Movie movie2 = new("O Hobbit e os Cinco Exércitos", TimeSpan.FromHours(2.90), n
 
 Movie movie3 = new("Harry Potter e a Pedra \"Filosofal\"", TimeSpan.FromHours(1.57), new DateOnly(2013, 09, 08), "Harry descobre que seu professor está em busca de uma poderosa pedra proibida escondida dentro do castelo.");
 
-movieRepository.Create(movie1);
-movieRepository.Create(movie2);
-movieRepository.Create(movie3);
+// movieRepository.Create(movie1);
+// movieRepository.Create(movie2);
+// movieRepository.Create(movie3);
 
 do
 {
@@ -49,7 +49,7 @@ void CreateMovie()
     TimeSpan time = TimeSpan.FromHours(Convert.ToDouble(Console.ReadLine()));
 
     Console.WriteLine("\nInforme a data de lançamento do filme (mm/dd/yyyy): ");
-    string getDate = Console.ReadLine();
+    string getDate = Console.ReadLine() ?? "00/00/00";
     DateOnly.TryParse(getDate, out date);
 
     Console.WriteLine("\nInforme a descrição do filme: ");

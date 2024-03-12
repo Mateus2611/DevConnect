@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace PlooCinema.ConsoleApplication.Model
 {
     public class Movie(string name, TimeSpan duration, DateOnly release, string description)
