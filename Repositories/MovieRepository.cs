@@ -15,13 +15,23 @@ namespace PlooCinema.ConsoleApplication.Repositories
     {
 
         List<Movie> listFilm = new List<Movie>();
-        string fileMovie = "MovieFile.json";
+        string fileMovie = "FileMovie.json";
 
-        
+
         public void Create(Movie addMovie)
         {
-            var jsonMovie = JsonSerializer.Serialize<Movie>(addMovie);
-            File.WriteAllText(fileMovie, jsonMovie);
+            var getJsonMovie = File.ReadAllText(fileMovie);
+            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie);
+
+            foreach (var item in jsonMovie)
+            {
+                if (!listFilm.Contains(item))
+                    listFilm.Add(item);
+            }
+
+            listFilm.Add(addMovie);
+            var listToJson = JsonSerializer.Serialize<IEnumerable<Movie>>(listFilm);
+            File.WriteAllText(fileMovie, listToJson);
         }
 
         public IEnumerable<Movie> Search(string name)
@@ -31,7 +41,7 @@ namespace PlooCinema.ConsoleApplication.Repositories
             var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie);
 
             var queryNameMovie = jsonMovie
-                .Where( item => item.Name.ToLower().Contains(name));
+                .Where(item => item.Name.ToLower().Contains(name));
 
             return queryNameMovie;
         }
