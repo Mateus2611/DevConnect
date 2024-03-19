@@ -13,13 +13,23 @@ namespace PlooCinema.ConsoleApplication.Repositories
 
     public class MovieRepository : IMovieRepository
     {
-        string fileMovie = "FileMovie.json";
+        public MovieRepository()
+        {
+            var infoFile = new FileInfo(fileMovie);
 
+            if (!infoFile.Exists)
+            {
+                File.Create(fileMovie).Close();
+                File.WriteAllText(fileMovie, "[]");
+            }
+        }
+
+        string fileMovie = "FileMovie.json";
 
         public void Create(Movie addMovie)
         {
             var getJsonMovie = File.ReadAllText(fileMovie);
-            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie);
+            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie) ?? [];
 
             var newjsonList = jsonMovie.Append(addMovie);
 
@@ -31,7 +41,7 @@ namespace PlooCinema.ConsoleApplication.Repositories
         {
             var getJsonMovie = File.ReadAllText(fileMovie);
 
-            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie);
+            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie) ?? [];
 
             var queryNameMovie = jsonMovie
                 .Where(item => item.Name.ToLower().Contains(name));
@@ -43,7 +53,7 @@ namespace PlooCinema.ConsoleApplication.Repositories
         {
             var getJsonMovie = File.ReadAllText(fileMovie);
 
-            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie);
+            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie) ?? [];
 
             return jsonMovie;
         }

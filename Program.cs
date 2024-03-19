@@ -41,12 +41,20 @@ do
 void CreateMovie()
 {
     DateOnly date;
+    TimeSpan time;
 
     Console.WriteLine("Informe o nome do filme: ");
     string title = Console.ReadLine() ?? "No title";
 
     Console.WriteLine("\nInforme a duração do filme: ");
-    TimeSpan time = TimeSpan.FromHours(Convert.ToDouble(Console.ReadLine()));
+
+    try
+    {
+        time = TimeSpan.FromHours(Convert.ToDouble(Console.ReadLine()));
+    } catch
+    {
+        time = TimeSpan.Zero;
+    }
 
     Console.WriteLine("\nInforme a data de lançamento do filme (mm/dd/yyyy): ");
     string getDate = Console.ReadLine() ?? "00/00/00";
