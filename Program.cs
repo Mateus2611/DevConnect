@@ -1,19 +1,10 @@
 using System.Reflection;
+using System.Runtime.InteropServices;
 using PlooCinema.ConsoleApplication.Model;
 using PlooCinema.ConsoleApplication.Repositories;
 
 IMovieRepository movieRepository = new MovieRepository();
 string nameMovie;
-
-Movie movie1 = new("Senhor dos Aneis", TimeSpan.FromHours(3.35), new DateOnly(2005, 11, 19), "Neste filme o senhor bolseiro pede ajuda de seu amigo para ajuda-lo a proteger seu anel.");
-
-Movie movie2 = new("O Hobbit e os Cinco Exércitos", TimeSpan.FromHours(2.90), new DateOnly(2010, 06, 05), "Nesta jornada Bilbo bolseiro terá que utilizar seu anel do poder para enfrentar um exercito de ENORMES orcs.");
-
-Movie movie3 = new("Harry Potter e a Pedra \"Filosofal\"", TimeSpan.FromHours(1.57), new DateOnly(2013, 09, 08), "Harry descobre que seu professor está em busca de uma poderosa pedra proibida escondida dentro do castelo.");
-
-// movieRepository.Create(movie1);
-// movieRepository.Create(movie2);
-// movieRepository.Create(movie3);
 
 do
 {
@@ -46,6 +37,9 @@ void CreateMovie()
     Console.WriteLine("Informe o nome do filme: ");
     string title = Console.ReadLine() ?? "No title";
 
+    Console.WriteLine("\nInforme o gênero do filme: ");
+    string genre = Console.ReadLine() ?? "No genre";
+
     Console.WriteLine("\nInforme a duração do filme: ");
 
     try
@@ -57,13 +51,13 @@ void CreateMovie()
     }
 
     Console.WriteLine("\nInforme a data de lançamento do filme (mm/dd/yyyy): ");
-    string getDate = Console.ReadLine() ?? "00/00/00";
+    string getDate = Console.ReadLine() ?? DateTime.Now.ToString("yyyy/dd/MM");
     DateOnly.TryParse(getDate, out date);
 
     Console.WriteLine("\nInforme a descrição do filme: ");
     string description = Console.ReadLine() ?? "Filme sem descrição";
 
-    Movie addMovie = new(title, time, date, description);
+    Movie addMovie = new(title, genre, time, date, description);
 
     movieRepository.Create(addMovie);
 }
