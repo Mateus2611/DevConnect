@@ -7,10 +7,10 @@ namespace PlooCinema.ConsoleApplication
     {
         static EnvorinmentVariables()
         {
-            Environment.SetEnvironmentVariable("HOST", "localhost");
-            Environment.SetEnvironmentVariable("USERNAME", "postgres");
-            Environment.SetEnvironmentVariable("PASSWORD", "ploo123");
-            Environment.SetEnvironmentVariable("DATABASE", "ploocinema");
+            Environment.SetEnvironmentVariable("HOST", "YOUR_HOST_HERE");
+            Environment.SetEnvironmentVariable("USERNAME", "YOUR_USERNAME_HERE");
+            Environment.SetEnvironmentVariable("PASSWORD", "YOUR_PASSWORD_HERE");
+            Environment.SetEnvironmentVariable("DATABASE", "YOUR_DATABASE_HERE");
         }
 
         public static NpgsqlConnection OpenConnection()
