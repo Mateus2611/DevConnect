@@ -13,16 +13,78 @@ namespace PlooCinema.ConsoleApplication.Repositories
         IEnumerable<Movie> Search(string name);
     }
 
-    public class MovieRepository : IMovieRepository
+    public class MovieRepositoryJson : IMovieRepository
     {
+        public MovieRepositoryJson()
+        {
+            var infoFile = new FileInfo(fileMovie);
+
+            if (!infoFile.Exists)
+            {
+                File.Create(fileMovie).Close();
+                File.WriteAllText(fileMovie, "[]");
+            }
+        }
+
+        string fileMovie = "FileMovie.json";
+        
+        public void Create(Movie addMovie)
+        {
+            var getAllMovie = File.ReadAllText(fileMovie);
+            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getAllMovie) ?? [];
+
+            var newJsonList = jsonMovie.Append(addMovie);
+
+            var listToJson = JsonSerializer.Serialize<IEnumerable<Movie>>(newJsonList);
+            File.WriteAllText(fileMovie, listToJson);
+        }
+
+        public IEnumerable<Movie> SearchAll()
+        {
+            var getJsonMovie = File.ReadAllText(fileMovie);
+            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie) ?? [];
+            
+            return jsonMovie;
+        }
+
+        public IEnumerable<Movie> Search(string name)
+        {
+            var getJsonMovie = File.ReadAllText(fileMovie);
+            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie) ?? [];
+
+            var queryNameMovie = jsonMovie
+                .Where(item => item.Name.ToLower().Contains(name));
+
+            return queryNameMovie;
+        }
+
+    }
+
+    public class MovieRepositoryPostgres : IMovieRepository
+    {
+        public MovieRepositoryPostgres()
+        {
+            DotNetEnv.Env.Load();
+
+            var host = Environment.GetEnvironmentVariable("HOST");
+            var user = Environment.GetEnvironmentVariable("USERNAME");
+            var pass = Environment.GetEnvironmentVariable("PASSWORD");
+            var data = Environment.GetEnvironmentVariable("DATABASE");
+
+            var connString = $"Host={host};Username={user};Password={pass};Database={data};";
+            
+            Connection = new NpgsqlConnection(connString);
+        }
+
+        private NpgsqlConnection Connection { get; set; }
+
         public void Create(Movie addMovie)
         {
             int minutes = (int)addMovie.Duration.TotalMinutes;
 
-            var conn = EnvorinmentVariables.OpenConnection();
-            conn.Open();
+            Connection.Open();
 
-            var cmd = new NpgsqlCommand("INSERT INTO movie (name, genre, description, duration_minutes, release) VALUES (@name, @genre, @description, @duration_minutes, @release)", conn);
+            var cmd = new NpgsqlCommand("INSERT INTO movie (name, genre, description, duration_minutes, release) VALUES (@name, @genre, @description, @duration_minutes, @release)", Connection);
 
             cmd.Parameters.AddWithValue("name", addMovie.Name);
             cmd.Parameters.AddWithValue("genre", addMovie.Genre);
@@ -32,17 +94,16 @@ namespace PlooCinema.ConsoleApplication.Repositories
 
             cmd.ExecuteNonQuery();
 
-            conn.Close();
+            Connection.Close();
         }
 
         public IEnumerable<Movie> Search(string nameSearch)
         {           
-            List<Movie> queryMovies = new();
+            List<Movie> queryMovies = [];
 
-            var conn = EnvorinmentVariables.OpenConnection();
-            conn.Open();
+            Connection.Open();
 
-            var cmd = new NpgsqlCommand("SELECT * FROM movie WHERE ( name ) ILIKE '%' || @name || '%'", conn);
+            var cmd = new NpgsqlCommand("SELECT * FROM movie WHERE ( name ) ILIKE '%' || @name || '%'", Connection);
             {
                 cmd.Parameters.AddWithValue("name", nameSearch);
             }
@@ -61,19 +122,18 @@ namespace PlooCinema.ConsoleApplication.Repositories
                 queryMovies.Add(movie);
             }
             
-            conn.Close();
+            Connection.Close();
 
             return queryMovies.AsEnumerable();
         }
 
         public IEnumerable<Movie> SearchAll()
         {
-            List<Movie> moviesqueryMovies = new();
+            List<Movie> moviesqueryMovies = [];
 
-            var conn = EnvorinmentVariables.OpenConnection();
-            conn.Open();
+            Connection.Open();
 
-            var cmd = new NpgsqlCommand("SELECT * FROM movie", conn);
+            var cmd = new NpgsqlCommand("SELECT * FROM movie", Connection);
             var reader = cmd.ExecuteReader();
 
             while (reader.Read())
@@ -88,7 +148,7 @@ namespace PlooCinema.ConsoleApplication.Repositories
                 moviesqueryMovies.Add(movie);
             }
             
-            conn.Close();
+            Connection.Close();
 
             return moviesqueryMovies.AsEnumerable();
         }

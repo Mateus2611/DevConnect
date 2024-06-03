@@ -3,8 +3,10 @@ using System.Runtime.InteropServices;
 using PlooCinema.ConsoleApplication.Model;
 using PlooCinema.ConsoleApplication.Repositories;
 
-IMovieRepository movieRepository = new MovieRepository();
+IMovieRepository movieRepository = new MovieRepositoryPostgres();
 string nameMovie;
+
+IMovieRepository movieRepositoryJson = new MovieRepositoryJson();
 
 do
 {
@@ -35,10 +37,10 @@ void CreateMovie()
     TimeSpan time;
 
     Console.WriteLine("Informe o nome do filme: ");
-    string title = Console.ReadLine() ?? "No title";
+    string title = Console.ReadLine() ?? "";
 
     Console.WriteLine("\nInforme o gênero do filme: ");
-    string genre = Console.ReadLine() ?? "No genre";
+    string genre = Console.ReadLine() ?? "";
 
     Console.WriteLine("\nInforme a duração do filme: ");
 
@@ -51,25 +53,30 @@ void CreateMovie()
     }
 
     Console.WriteLine("\nInforme a data de lançamento do filme (mm/dd/yyyy): ");
-    string getDate = Console.ReadLine() ?? DateTime.Now.ToString("yyyy/dd/MM");
+    string getDate = Console.ReadLine() ?? DateTime.Now.Date.ToString("yyyy/MM/dd");
     DateOnly.TryParse(getDate, out date);
 
     Console.WriteLine("\nInforme a descrição do filme: ");
-    string description = Console.ReadLine() ?? "Filme sem descrição";
+    string description = Console.ReadLine() ?? "";
 
     Movie addMovie = new(title, genre, time, date, description);
 
     movieRepository.Create(addMovie);
+    movieRepositoryJson.Create(addMovie);
 }
 
 void AllMovies()
 {
     var searchResult = movieRepository.SearchAll();
 
+    Console.WriteLine("Postgres consult:");
     foreach (Movie item in searchResult)
     {
         Console.WriteLine(item.ToString());
     }
+
+    Console.WriteLine("Json consult:");
+    Console.WriteLine(movieRepositoryJson.SearchAll());
 }
 
 void SearchMovie()
@@ -78,15 +85,26 @@ void SearchMovie()
     nameMovie = Console.ReadLine()?.ToLower() ?? "";
 
     var searchResult = movieRepository.Search(nameMovie);
+    var searchJson = movieRepositoryJson.Search(nameMovie);
 
+    Console.WriteLine("Postgres Consult: ");
     foreach (Movie item in searchResult)
     {
         // Console.WriteLine("Nome: {0}, Duração: {1}, Lançamento: {2}, Descrição: {3}\n", item.Name, item.Duration, item.Release, item.Description);
         Console.WriteLine(item.ToString());
     }
 
+    Console.WriteLine("Json Consult: ");
+    foreach (Movie item in searchJson)
+    {
+        Console.WriteLine(item.ToString());
+    }
+
     if (searchResult.Count() == 0)
         Console.WriteLine("Filme não encontrado");
+
+    if (searchJson.Count() == 0)
+        Console.WriteLine("Filme não encontrado.");
 }
 
 
