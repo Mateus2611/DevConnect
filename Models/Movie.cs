@@ -22,7 +22,7 @@ namespace PlooCinema.ConsoleApplication.Model
                 if (value == "" || value == null)
                     throw new ArgumentException("Informe o titulo do filme.");
 
-                _name = value.ToUpper();
+                _name = value;
             }
         }
         private string _genre;
@@ -76,7 +76,7 @@ namespace PlooCinema.ConsoleApplication.Model
 
         public override string ToString()
         {
-            return $"Nome: {Name}, Gênero: {Genre}, Duração: {Duration}, Lançamento: {Release}, Descrição: {Description}\n";
+            return $"ID: {Id} Nome: {Name}, Gênero: {Genre}, Duração: {Duration}, Lançamento: {Release}, Descrição: {Description}\n";
         }
     }
 }

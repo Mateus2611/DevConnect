@@ -11,8 +11,8 @@ namespace PlooCinema.ConsoleApplication.Repositories
         void Create(Movie addMovie);
         IEnumerable<Movie> SearchAll();
         IEnumerable<Movie> Search(string name);
-        bool Delete(Movie removeMovie);
-        void Update(Movie updateMovie);
+        void Update(int idMovie, Movie updateMovie);
+        void Delete(int idMovie);
     }
 
     public class MovieRepositoryJson : IMovieRepository
@@ -62,6 +62,41 @@ namespace PlooCinema.ConsoleApplication.Repositories
             return queryNameMovie;
         }
 
+        public void Update(int idMovie, Movie updateMovie)
+        {
+            var getJsonMovie = File.ReadAllText(fileMovie);
+            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie) ?? [];
+
+            var queryMovie = jsonMovie
+                .SingleOrDefault(item => item.Id == idMovie);
+
+            if (queryMovie != null)
+            {
+                queryMovie.Name = updateMovie.Name;
+                queryMovie.Genre = updateMovie.Genre;
+                queryMovie.Duration = updateMovie.Duration;
+                queryMovie.Release = updateMovie.Release;
+                queryMovie.Description = updateMovie.Description;
+            }
+
+            var newJson = JsonSerializer.Serialize<IEnumerable<Movie>>(jsonMovie);
+            File.WriteAllText(fileMovie, newJson);
+        }
+
+        public void Delete(int idMovie)
+        {
+            var getJsonMovie = File.ReadAllText(fileMovie);
+            var jsonMovie = JsonSerializer.Deserialize<List<Movie>>(getJsonMovie) ?? [];
+
+            var queryMovie = jsonMovie
+                .SingleOrDefault(item => item.Id == idMovie);
+
+            if (queryMovie != null)
+                jsonMovie.Remove(queryMovie);
+
+            var newJson = JsonSerializer.Serialize<List<Movie>>(jsonMovie);
+            File.WriteAllText(fileMovie, newJson);
+        }
     }
 
     public class MovieRepositoryPostgres : IMovieRepository
@@ -110,7 +145,6 @@ namespace PlooCinema.ConsoleApplication.Repositories
             var cmd = new NpgsqlCommand("SELECT * FROM movie WHERE ( name ) ILIKE '%' || @name || '%'", Connection);
 
             cmd.Parameters.AddWithValue("name", nameSearch);
-
 
             var reader = cmd.ExecuteReader();
 
