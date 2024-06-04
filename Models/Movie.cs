@@ -12,29 +12,29 @@ namespace PlooCinema.ConsoleApplication.Model
             Release = release;
             Description = description;
         }
-
+        public int Id { get; set; }
         private string _name;
         public string Name
         {
-            get => _name.ToUpper();
+            get => _name;
             set
             {
                 if (value == "" || value == null)
                     throw new ArgumentException("Informe o titulo do filme.");
 
-                _name = value.ToLower();
+                _name = value.ToUpper();
             }
         }
         private string _genre;
         public string Genre
         {
-            get => _genre.ToUpper();
+            get => _genre;
             set
             {
                 if (value == "" || value == null)
                     throw new ArgumentException("Informe o genero do filme.");
 
-                _genre = value.ToLower();
+                _genre = value.ToUpper();
             }
         }
         private TimeSpan _duration;
@@ -53,18 +53,24 @@ namespace PlooCinema.ConsoleApplication.Model
         public DateOnly Release
         {
             get => _release;
-            set => _release = value;
+            set
+            {
+                if (value > DateOnly.FromDateTime(DateTime.Now))
+                    throw new ArgumentException("A data informada não é valida.");
+
+                _release = value;
+            }
         }
         private string _description;
         public string Description
         {
-            get => _description.ToUpper();
+            get => _description;
             set
             {
                 if (value == "" || value == null)
                     throw new ArgumentException("Informe a descrição do filme.");
 
-                _description = value.ToLower();
+                _description = value;
             }
         }
 

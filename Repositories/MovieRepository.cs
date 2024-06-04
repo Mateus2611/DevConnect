@@ -8,9 +8,11 @@ namespace PlooCinema.ConsoleApplication.Repositories
 {
     public interface IMovieRepository
     {
-        IEnumerable<Movie> SearchAll();
         void Create(Movie addMovie);
+        IEnumerable<Movie> SearchAll();
         IEnumerable<Movie> Search(string name);
+        bool Delete(Movie removeMovie);
+        void Update(Movie updateMovie);
     }
 
     public class MovieRepositoryJson : IMovieRepository
@@ -27,11 +29,13 @@ namespace PlooCinema.ConsoleApplication.Repositories
         }
 
         string fileMovie = "FileMovie.json";
-        
+
         public void Create(Movie addMovie)
         {
             var getAllMovie = File.ReadAllText(fileMovie);
             var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getAllMovie) ?? [];
+
+            addMovie.Id = jsonMovie.Count() + 1;
 
             var newJsonList = jsonMovie.Append(addMovie);
 
@@ -43,7 +47,7 @@ namespace PlooCinema.ConsoleApplication.Repositories
         {
             var getJsonMovie = File.ReadAllText(fileMovie);
             var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie) ?? [];
-            
+
             return jsonMovie;
         }
 
@@ -72,7 +76,7 @@ namespace PlooCinema.ConsoleApplication.Repositories
             var data = Environment.GetEnvironmentVariable("DATABASE");
 
             var connString = $"Host={host};Username={user};Password={pass};Database={data};";
-            
+
             Connection = new NpgsqlConnection(connString);
         }
 
@@ -98,19 +102,19 @@ namespace PlooCinema.ConsoleApplication.Repositories
         }
 
         public IEnumerable<Movie> Search(string nameSearch)
-        {           
+        {
             List<Movie> queryMovies = [];
 
             Connection.Open();
 
             var cmd = new NpgsqlCommand("SELECT * FROM movie WHERE ( name ) ILIKE '%' || @name || '%'", Connection);
-            {
-                cmd.Parameters.AddWithValue("name", nameSearch);
-            }
+
+            cmd.Parameters.AddWithValue("name", nameSearch);
+
 
             var reader = cmd.ExecuteReader();
 
-            while (reader.Read())
+            while (reader.HasRows && reader.Read())
             {
                 DateTime dateTime = reader.GetDateTime(reader.GetOrdinal("release"));
                 DateOnly date = DateOnly.FromDateTime(dateTime);
@@ -121,7 +125,7 @@ namespace PlooCinema.ConsoleApplication.Repositories
 
                 queryMovies.Add(movie);
             }
-            
+
             Connection.Close();
 
             return queryMovies.AsEnumerable();
@@ -136,7 +140,7 @@ namespace PlooCinema.ConsoleApplication.Repositories
             var cmd = new NpgsqlCommand("SELECT * FROM movie", Connection);
             var reader = cmd.ExecuteReader();
 
-            while (reader.Read())
+            while (reader.HasRows && reader.Read())
             {
                 DateTime dateTime = reader.GetDateTime(reader.GetOrdinal("release"));
                 DateOnly date = DateOnly.FromDateTime(dateTime);
@@ -147,7 +151,7 @@ namespace PlooCinema.ConsoleApplication.Repositories
 
                 moviesqueryMovies.Add(movie);
             }
-            
+
             Connection.Close();
 
             return moviesqueryMovies.AsEnumerable();

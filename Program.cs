@@ -76,7 +76,10 @@ void AllMovies()
     }
 
     Console.WriteLine("Json consult:");
-    Console.WriteLine(movieRepositoryJson.SearchAll());
+    foreach (Movie item in movieRepositoryJson.SearchAll())
+    {
+        Console.WriteLine(item.ToString());
+    }
 }
 
 void SearchMovie()
