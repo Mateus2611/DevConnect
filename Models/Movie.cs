@@ -4,6 +4,16 @@ namespace PlooCinema.ConsoleApplication.Model
 {
     public class Movie
     {
+        public Movie() {}
+        public Movie(int id, string name, string genre, TimeSpan duration, DateOnly release, string description)
+        {
+            Id = id;
+            Name = name;
+            Genre = genre;
+            Duration = duration;
+            Release = release;
+            Description = description;
+        }
         public Movie(string name, string genre, TimeSpan duration, DateOnly release, string description)
         {
             Name = name;

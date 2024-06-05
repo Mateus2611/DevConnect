@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using PlooCinema.ConsoleApplication.Model;
 using PlooCinema.ConsoleApplication.Repositories;
 
-// IMovieRepository movieRepository = new MovieRepositoryPostgres();
+IMovieRepository movieRepository = new MovieRepositoryPostgres();
 string nameMovie;
 
 IMovieRepository movieRepositoryJson = new MovieRepositoryJson();
@@ -28,10 +28,10 @@ do
             CreateMovie();
             break;
         case 4:
-            UpdateMovie();
+            UpdateMovieJson();
             break;
         case 5:
-            DeleteMovie();
+            DeleteMovieJson();
             break;
 
     }
@@ -67,19 +67,17 @@ void CreateMovie()
 
     Movie addMovie = new(title, genre, time, date, description);
 
-    // movieRepository.Create(addMovie);
+    movieRepository.Create(addMovie);
     movieRepositoryJson.Create(addMovie);
 }
 
 void AllMovies()
 {
-    // var searchResult = movieRepository.SearchAll();
-
-    // Console.WriteLine("Postgres consult:");
-    // foreach (Movie item in searchResult)
-    // {
-    //     Console.WriteLine(item.ToString());
-    // }
+    Console.WriteLine("Postgres consult:");
+    foreach (Movie item in movieRepository.SearchAll())
+    {
+        Console.WriteLine(item.ToString());
+    }
 
     Console.WriteLine("Json consult:");
     foreach (Movie item in movieRepositoryJson.SearchAll())
@@ -93,15 +91,14 @@ void SearchMovie()
     Console.WriteLine("Informe o nome do filme:");
     nameMovie = Console.ReadLine()?.ToLower() ?? "";
 
-    // var searchResult = movieRepository.Search(nameMovie);
+    var searchResult = movieRepository.Search(nameMovie);
     var searchJson = movieRepositoryJson.Search(nameMovie);
 
-    // Console.WriteLine("Postgres Consult: ");
-    // foreach (Movie item in searchResult)
-    // {
-    //     // Console.WriteLine("Nome: {0}, Duração: {1}, Lançamento: {2}, Descrição: {3}\n", item.Name, item.Duration, item.Release, item.Description);
-    //     Console.WriteLine(item.ToString());
-    // }
+    Console.WriteLine("Postgres Consult: ");
+    foreach (Movie item in searchResult)
+    {
+        Console.WriteLine(item.ToString());
+    }
 
     Console.WriteLine("Json Consult: ");
     foreach (Movie item in searchJson)
@@ -109,21 +106,24 @@ void SearchMovie()
         Console.WriteLine(item.ToString());
     }
 
-    // if (searchResult.Count() == 0)
-    //     Console.WriteLine("Filme não encontrado");
+    if (searchResult.Count() == 0)
+        Console.WriteLine("Filme não encontrado");
 
     if (searchJson.Count() == 0)
         Console.WriteLine("Filme não encontrado.");
 }
 
-void UpdateMovie()
+void UpdateMovieJson()
 {
 
     DateOnly date;
     TimeSpan time;
 
-    Console.WriteLine("Informe o ID do filme:");
-    int id = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("(JSON) Informe o ID do filme:");
+    int idJson = Convert.ToInt32(Console.ReadLine());
+
+    Console.WriteLine("(POSTGRES) Informe o ID do filme:");
+    int idPostgres = Convert.ToInt32(Console.ReadLine());
 
     Console.WriteLine("Informe o nome do filme: ");
     string title = Console.ReadLine() ?? "";
@@ -150,15 +150,20 @@ void UpdateMovie()
 
     Movie addMovie = new(title, genre, time, date, description);
 
-    movieRepositoryJson.Update(id, addMovie);
+    movieRepositoryJson.Update(idJson, addMovie);
+    movieRepository.Update(idPostgres, addMovie);
 }
 
-void DeleteMovie()
+void DeleteMovieJson()
 {
-    Console.WriteLine("Informe o ID do filme:");
-    int id = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("(JSON) Informe o ID do filme:");
+    int idJson = Convert.ToInt32(Console.ReadLine());
+    
+    Console.WriteLine("(POSTGRES) Informe o ID do filme:");
+    int idPostgres = Convert.ToInt32(Console.ReadLine());
 
-    movieRepositoryJson.Delete(id);
+    movieRepositoryJson.Delete(idJson);
+    movieRepository.Delete(idPostgres);
 }
 // () = Receber e passar parâmetros, inicializar arrow functions
 // {} = Bloco de código
