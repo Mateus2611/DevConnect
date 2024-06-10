@@ -11,8 +11,8 @@ namespace PlooCinema.ConsoleApplication.Repositories
         void Create(Movie addMovie);
         IEnumerable<Movie> SearchAll();
         IEnumerable<Movie> Search(string name);
-        bool Delete(Movie removeMovie);
-        void Update(Movie updateMovie);
+        void Update(int idMovie, Movie updateMovie);
+        void Delete(int idMovie);
     }
 
     public class MovieRepositoryJson : IMovieRepository
@@ -57,11 +57,46 @@ namespace PlooCinema.ConsoleApplication.Repositories
             var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie) ?? [];
 
             var queryNameMovie = jsonMovie
-                .Where(item => item.Name.ToLower().Contains(name));
+                .Where(item => item.Name.Contains(name));
 
             return queryNameMovie;
         }
 
+        public void Update(int idMovie, Movie updateMovie)
+        {
+            var getJsonMovie = File.ReadAllText(fileMovie);
+            var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie) ?? [];
+
+            var queryMovie = jsonMovie
+                .SingleOrDefault(item => item.Id == idMovie);
+
+            if (queryMovie != null)
+            {
+                queryMovie.Name = updateMovie.Name;
+                queryMovie.Genre = updateMovie.Genre;
+                queryMovie.Duration = updateMovie.Duration;
+                queryMovie.Release = updateMovie.Release;
+                queryMovie.Description = updateMovie.Description;
+            }
+
+            var newJson = JsonSerializer.Serialize(jsonMovie);
+            File.WriteAllText(fileMovie, newJson);
+        }
+
+        public void Delete(int idMovie)
+        {
+            var getJsonMovie = File.ReadAllText(fileMovie);
+            var jsonMovie = JsonSerializer.Deserialize<List<Movie>>(getJsonMovie) ?? [];
+
+            var queryMovie = jsonMovie
+                .SingleOrDefault(item => item.Id == idMovie);
+
+            if (queryMovie != null)
+                jsonMovie.Remove(queryMovie);
+
+            var newJson = JsonSerializer.Serialize(jsonMovie);
+            File.WriteAllText(fileMovie, newJson);
+        }
     }
 
     public class MovieRepositoryPostgres : IMovieRepository
@@ -111,7 +146,6 @@ namespace PlooCinema.ConsoleApplication.Repositories
 
             cmd.Parameters.AddWithValue("name", nameSearch);
 
-
             var reader = cmd.ExecuteReader();
 
             while (reader.HasRows && reader.Read())
@@ -121,7 +155,7 @@ namespace PlooCinema.ConsoleApplication.Repositories
 
                 TimeSpan duration = TimeSpan.FromMinutes(reader.GetInt32(reader.GetOrdinal("duration_minutes")));
 
-                var movie = new Movie(reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("genre")), duration, date, reader.GetString(reader.GetOrdinal("description")));
+                var movie = new Movie(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("genre")), duration, date, reader.GetString(reader.GetOrdinal("description")));
 
                 queryMovies.Add(movie);
             }
@@ -147,7 +181,7 @@ namespace PlooCinema.ConsoleApplication.Repositories
 
                 TimeSpan duration = TimeSpan.FromMinutes(reader.GetInt32(reader.GetOrdinal("duration_minutes")));
 
-                var movie = new Movie(reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("genre")), duration, date, reader.GetString(reader.GetOrdinal("description")));
+                var movie = new Movie(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("genre")), duration, date, reader.GetString(reader.GetOrdinal("description")));
 
                 moviesqueryMovies.Add(movie);
             }
@@ -155,6 +189,39 @@ namespace PlooCinema.ConsoleApplication.Repositories
             Connection.Close();
 
             return moviesqueryMovies.AsEnumerable();
+        }
+
+        public void Update(int idMovie, Movie updateMovie)
+        {
+            int minutes = (int)updateMovie.Duration.TotalMinutes;
+
+            Connection.Open();
+
+            var cmd = new NpgsqlCommand("UPDATE movie SET name = @name, genre = @genre, description = @description, duration_minutes = @duration_minutes, release = @release WHERE id = @id", Connection);
+
+            cmd.Parameters.AddWithValue("id", idMovie);
+            cmd.Parameters.AddWithValue("name", updateMovie.Name);
+            cmd.Parameters.AddWithValue("genre", updateMovie.Genre);
+            cmd.Parameters.AddWithValue("description",updateMovie.Description);
+            cmd.Parameters.AddWithValue("duration_minutes", minutes);
+            cmd.Parameters.AddWithValue("release", updateMovie.Release);
+
+            cmd.ExecuteNonQuery();
+
+            Connection.Close();
+        }
+
+        public void Delete(int idMovie)
+        {
+            Connection.Open();
+
+            var cmd = new NpgsqlCommand("DELETE FROM movie WHERE id = @id", Connection);
+
+            cmd.Parameters.AddWithValue("id", idMovie);
+
+            cmd.ExecuteNonQuery();
+
+            Connection.Close();
         }
     }
 }
